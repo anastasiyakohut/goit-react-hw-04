@@ -40,7 +40,7 @@ export default function App() {
             setLoading(true); 
             try {
                 const response = await axios.get(
-                    `https://api.unsplash.com/search/photos/?query=${description}&client_id=2iO51974LO3lFXGKiJTOTCo3WzG-IdNTwia3Ehph0`
+                    `https://api.unsplash.com/search/photos/?query=${description}&client_id=2idXO51974LO3lFXGKiJTOTCo3WzG-IdNTwia3Ehph0`
                 );
                 setPhotos((prevPhotos) => [...prevPhotos, ...response.data.results]);
             } catch (error) {
