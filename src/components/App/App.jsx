@@ -13,16 +13,20 @@ export default function App() {
     const [description, setDescription] = useState("");
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false); 
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(999);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalImgSrc, setModalImgSrc] = useState("");
     const [modalImgAlt, setModalImgAlt] = useState("");
     
-    const handleSearch = async (newDescription) => {
+    const handleSearch = (newDescription) => {
+        setPhotos([]);
+        setPage(1);
         setDescription(newDescription);
     };
 
-    const handleLoadMore = async () => {
-        fetchPhoto();
+    const handleLoadMore = () => {
+        setPage((prevPage) => prevPage + 1);
     };
 
     const handleImageClick = (imgSrc, imgAlt) => {
@@ -37,28 +41,36 @@ export default function App() {
         }
         
         async function fetchPhoto() {
-            setLoading(true); 
             try {
+                setLoading(true); 
+                setError(false);
                 const response = await axios.get(
-                    `https://api.unsplash.com/search/photos/?query=${description}&client_id=2idXO51974LO3lFXGKiJTOTCo3WzG-IdNTwia3Ehph0`
+                    `https://api.unsplash.com/search/photos/?query=${description}&page=${page}&client_id=2idXO51974LO3lFXGKiJTOTCo3WzG-IdNTwia3Ehph0`
                 );
+                setTotalPages(response.data.total_pages); 
                 setPhotos((prevPhotos) => [...prevPhotos, ...response.data.results]);
-            } catch (error) {
+            } catch (error) { 
                 setError(true);
             } finally {
                 setLoading(false); 
             }
         }
-        fetchPhoto();
-    }, [description]);
 
+        fetchPhoto();
+    }, [description, page]); 
 
     return (
         <div className={css.container}>
             <SearchBar onSearch={handleSearch} />
+            {page >= totalPages && <p>THIS IS THE END!</p>}
             {error ? <ErrorMessage /> : (photos.length > 0 && <ImageGallery items={photos} onImageClick={handleImageClick} />)}
-            {photos.length > 0 && !loading && <LoadMoreBtn onClick={handleLoadMore} />}
-            <ImageModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} imgSrc={modalImgSrc} imgAlt={modalImgAlt} />
+            {photos.length > 0 && !loading && page < totalPages && <LoadMoreBtn onClick={handleLoadMore} />}
+            <ImageModal 
+                isOpen={isModalOpen} 
+                onRequestClose={() => setIsModalOpen(false)} 
+                imgSrc={modalImgSrc} 
+                imgAlt={modalImgAlt} 
+            />
             <Toaster />
         </div>
     );

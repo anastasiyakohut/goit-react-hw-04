@@ -1,6 +1,8 @@
 import Modal from 'react-modal';
 import css from './ImageModal.module.css';
 
+Modal.setAppElement('#root'); 
+
 export default function ImageModal({ isOpen, onRequestClose, imgSrc, imgAlt }) {
     return (
         <Modal
@@ -9,7 +11,9 @@ export default function ImageModal({ isOpen, onRequestClose, imgSrc, imgAlt }) {
             className={css.modal}
             overlayClassName={css.overlay}
         >
-            <img src={imgSrc} alt={imgAlt} className={css.image} />
+            <div className={css.content}>
+                <img src={imgSrc} alt={imgAlt} className={css.image} />
+            </div>
         </Modal>
     );
 }

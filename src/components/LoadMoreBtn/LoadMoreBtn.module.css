@@ -1,0 +1,15 @@
+.container {
+  display: block;
+  text-align: center;
+  margin: 28px;
+}
+
+.loadMoreBtn {
+  background-color: #3333e0;
+  font-family: inherit;
+  color: #f0f0f0;
+}
+
+.loadMoreBtn:hover {
+  background-color: #4444ff;
+}
