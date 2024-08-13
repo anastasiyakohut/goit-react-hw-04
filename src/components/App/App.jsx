@@ -45,12 +45,13 @@ export default function App() {
                 setLoading(true); 
                 setError(false);
                 const response = await axios.get(
-                    `https://api.unsplash.com/search/photos/?query=${description}&page=${page}&client_id=2idXO51974LO3lFXGKiJTOTCo3WzG-IdNTwia3Ehph0`
+                    `https://api.unsplash.com/search/photos/?query=${description}&page=${page}&per_page=16&client_id=2idXO51974LO3lFXGKiJTOTCo3WzG-IdNTwia3Ehph0`
                 );
                 setTotalPages(response.data.total_pages); 
                 setPhotos((prevPhotos) => [...prevPhotos, ...response.data.results]);
             } catch (error) { 
                 setError(true);
+
             } finally {
                 setLoading(false); 
             }
@@ -62,9 +63,10 @@ export default function App() {
     return (
         <div className={css.container}>
             <SearchBar onSearch={handleSearch} />
-            {page >= totalPages && <p>THIS IS THE END!</p>}
             {error ? <ErrorMessage /> : (photos.length > 0 && <ImageGallery items={photos} onImageClick={handleImageClick} />)}
-            {photos.length > 0 && !loading && page < totalPages && <LoadMoreBtn onClick={handleLoadMore} />}
+            {photos.length > 0 && !loading && page < totalPages && !error && <LoadMoreBtn onClick={handleLoadMore} />}
+            {loading && <p className={css.loader}>Loading photos, please wait...</p>}
+            {page >= totalPages && <p className={css.lastPage}>THIS IS THE END!</p>}
             <ImageModal 
                 isOpen={isModalOpen} 
                 onRequestClose={() => setIsModalOpen(false)} 

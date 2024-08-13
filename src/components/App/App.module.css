@@ -1,3 +1,11 @@
 .container {
   border: 1px solid transparent;
 }
+
+.loader {
+  text-align: center;
+}
+
+.lastPage {
+  text-align: center;
+}

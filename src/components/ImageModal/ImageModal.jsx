@@ -3,7 +3,7 @@ import css from './ImageModal.module.css';
 
 Modal.setAppElement('#root'); 
 
-export default function ImageModal({ isOpen, onRequestClose, imgSrc, imgAlt }) {
+export default function ImageModal({ isOpen, onRequestClose, imgSrc, imgAlt}) {
     return (
         <Modal
             isOpen={isOpen}
